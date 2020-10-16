@@ -8,13 +8,14 @@ $(document).ready(function() {
     var date = moment().format('MMMM Do YYYY');
 
     //needed global vars
-    var lastHour;
+    var lastHour = 99;
     var currentHour = moment().format('HH');
     
     //initial dom populator
     todayEl.text(date);
     for(var i = 0; i<times.length; i++){
     
+      //create each row give them classes
       var basic = $("<div>");
       basic.attr('class', 'time-block row');
       var firstEl = $("<div>");
@@ -24,19 +25,21 @@ $(document).ready(function() {
       var thirdEl = $("<button>");
       thirdEl.attr('class', 'saveBtn col-2').text('save');
       
-    
-      
+      //append to DOM
       basic.append(firstEl);
       basic.append(secondEl);      
       basic.append(thirdEl);
       area.append(basic);
     }
+    
     updateTimeClasses();
 
-    setInterval(tick, 6000);
+
+    setInterval(tick, 1000);
     function tick(){
-      currentHour = moment().format('HH') - 6;
+      currentHour = moment().format('HH');
       console.log(currentHour);
+      //when there is a change in hour update the color of the blocks
       if(lastHour !== currentHour){
         updateTimeClasses();
       }
@@ -44,22 +47,15 @@ $(document).ready(function() {
     }
     
     function updateTimeClasses(){
-      // hourindex needs to be current - 9
+      //(9:00 is the index of 0)
       var hourIndex = currentHour - 9;
-      console.log(hourIndex)
+      //change the color based on the times.
       $(".time-block").each(function(timeBox){
-        console.log(timeBox);
-
-        if(timeBox < hourIndex){
-          $(this).addClass('past').removeClass('present').removeClass('future');
-        }
-        if(timeBox === hourIndex){
-          $(this).addClass('present').removeClass('past').removeClass('future');
-        }
-        if(timeBox > hourIndex){
-          $(this).addClass('future').removeClass('present').removeClass('past');
-        }
-      })
+        //adding classes and redundant removal of classes 
+        if(timeBox < hourIndex){$(this).addClass('past').removeClass('present').removeClass('future')}
+        if(timeBox === hourIndex){$(this).addClass('present').removeClass('past').removeClass('future')}
+        if(timeBox > hourIndex){$(this).addClass('future').removeClass('present').removeClass('past')}
+      });
     }
 
 
