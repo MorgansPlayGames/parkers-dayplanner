@@ -18,6 +18,7 @@ $(document).ready(function() {
       //create each row give them classes
       var basic = $("<div>");
       basic.attr('class', 'time-block row');
+      basic.attr('id', 'tBlock'+i)
       var firstEl = $("<div>");
       firstEl.attr('class', 'hour col-2').text(times[i]);
       var secondEl = $("<textarea>");
@@ -31,14 +32,15 @@ $(document).ready(function() {
       basic.append(thirdEl);
       area.append(basic);
     }
-    
-    updateTimeClasses();
 
+    loadText();
 
+    //create a clock to update 
+    tick();
     setInterval(tick, 1000);
+    //every second check if current hour has changed
     function tick(){
       currentHour = moment().format('HH');
-      console.log(currentHour);
       //when there is a change in hour update the color of the blocks
       if(lastHour !== currentHour){
         updateTimeClasses();
@@ -57,10 +59,28 @@ $(document).ready(function() {
         if(timeBox > hourIndex){$(this).addClass('future').removeClass('present').removeClass('past')}
       });
     }
+    
+    //get the text and the Id of the time block, give it to the save function
+    $(".saveBtn").click(function(){
+        saveText = $(this).siblings('.description').val();
+        saveId = $(this).parent().attr('id');
+        saveToLocal(saveText, saveId);       
+    });
 
+    function loadText(){
+      $(".time-block").each(function(timeBox){
+        textToLoad = localStorage.getItem('tBlock' + timeBox);
+        if(textToLoad){
+          $(this).children('.description').val(textToLoad);
+        }
+      });
+    }
+  
 
-
-
-
-
+    function saveToLocal(saveText, saveId){
+      console.log(saveText, saveId);
+      tBoxEl = $('#'+saveId).children('.description').val();
+      localStorage.setItem(saveId, tBoxEl);
+      
+    }
   });
