@@ -47,7 +47,7 @@ $(document).ready(function() {
       }
       lastHour = currentHour;
     }
-    
+    //update the colors if the hour changes
     function updateTimeClasses(){
       //(9:00 is the index of 0)
       var hourIndex = currentHour - 9;
@@ -59,14 +59,13 @@ $(document).ready(function() {
         if(timeBox > hourIndex){$(this).addClass('future').removeClass('present').removeClass('past')}
       });
     }
-    
-    //get the text and the Id of the time block, give it to the save function
+    //on click: get the text and the Id of the time block, give it to the save function
     $(".saveBtn").click(function(){
         saveText = $(this).siblings('.description').val();
         saveId = $(this).parent().attr('id');
         saveToLocal(saveText, saveId);       
     });
-
+    //Get the saved text on initial run
     function loadText(){
       $(".time-block").each(function(timeBox){
         textToLoad = localStorage.getItem('tBlock' + timeBox);
@@ -75,12 +74,10 @@ $(document).ready(function() {
         }
       });
     }
-  
-
+    //save the text of the clicked element
     function saveToLocal(saveText, saveId){
       console.log(saveText, saveId);
       tBoxEl = $('#'+saveId).children('.description').val();
-      localStorage.setItem(saveId, tBoxEl);
-      
+      localStorage.setItem(saveId, tBoxEl); 
     }
   });
