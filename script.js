@@ -76,7 +76,6 @@ $(document).ready(function() {
     }
     //save the text of the clicked element
     function saveToLocal(saveText, saveId){
-      console.log(saveText, saveId);
       tBoxEl = $('#'+saveId).children('.description').val();
       localStorage.setItem(saveId, tBoxEl); 
     }
